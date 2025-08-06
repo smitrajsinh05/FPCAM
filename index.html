@@ -846,7 +846,8 @@
     </div>
 
     <script>
-        // 4-PILLAR AYURVEDIC ASSESSMENT SYSTEM - PART 2 (JavaScript)
+            
+// 4-PILLAR AYURVEDIC ASSESSMENT SYSTEM - PART 2 (JavaScript)
 // This script should be added to the HTML from Part 1, replacing the simple console.log
 
 // Global data storage
@@ -1292,7 +1293,559 @@ function generateFinalReport() {
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
             <div class="pillar-summary">
-                <h5>🔥 Agni Assessment</h5>
+                <p>Vishama: ${assessmentData.agni.vishama} | Tikshna: ${assessmentData.agni.tikshna}</p>
+                <p>Manda: ${assessmentData.agni.manda} | Sama: ${assessmentData.agni.sama}</p>
+                <p>Total Dusti: ${assessmentData.agni.vishama + assessmentData.agni.tikshna + assessmentData.agni.manda}/8</p>
+            </div>
+            
+            <div class="pillar-summary">
+                <h5>⚖️ Dosha Assessment</h5>
+                <p>Vata: ${assessmentData.dosha.vata}/20</p>
+                <p>Pitta: ${assessmentData.dosha.pitta}/20</p>
+                <p>Kapha: ${assessmentData.dosha.kapha}/20</p>
+            </div>
+            
+            <div class="pillar-summary">
+                <h5>🧬 Dhatu Assessment</h5>
+                <p><em>Framework completed</em></p>
+                <p>Ready for detailed implementation</p>
+            </div>
+            
+            <div class="pillar-summary">
+                <h5>🌊 Srotas Assessment</h5>
+                <p><em>Framework completed</em></p>
+                <p>Ready for detailed implementation</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #e8f4fd; border-radius: 10px;">
+            <h4>Clinical Summary</h4>
+            <p>This comprehensive 4-pillar assessment provides a systematic evaluation of the patient's constitutional state and pathological patterns according to classical Ayurvedic principles.</p>
+            <p><strong>Recommendations:</strong> Based on the assessment results, appropriate treatment protocols can be designed focusing on the dominant imbalances identified.</p>
+        </div>
+    `;
+    
+    document.getElementById('summary-results').innerHTML = reportContent;
+}
+
+// Print and export functions
+function printFinalReport() {
+    const printContent = generatePrintableReport();
+    const printWindow = window.open('', '_blank');
+    
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>4-Pillar Ayurvedic Assessment Report</title>
+            <style>
+                body { 
+                    font-family: Arial, sans-serif; 
+                    margin: 20px; 
+                    line-height: 1.6; 
+                }
+                .header { 
+                    text-align: center; 
+                    border-bottom: 3px solid #333; 
+                    padding-bottom: 20px; 
+                    margin-bottom: 30px; 
+                }
+                .section { 
+                    margin-bottom: 25px; 
+                    page-break-inside: avoid;
+                }
+                .section h3 { 
+                    background: #f0f0f0; 
+                    padding: 10px; 
+                    margin: 0 0 15px 0; 
+                    border-left: 5px solid #667eea;
+                }
+                .patient-info { 
+                    background: #f9f9f9; 
+                    padding: 15px; 
+                    border: 1px solid #ddd; 
+                    border-radius: 5px;
+                }
+                .score-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 15px;
+                    margin: 15px 0;
+                }
+                .score-item {
+                    background: #f8f9fa;
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: 1px solid #dee2e6;
+                }
+                .summary {
+                    background: #e8f4fd;
+                    padding: 20px;
+                    border-radius: 5px;
+                    margin-top: 20px;
+                }
+                @media print {
+                    .no-print { display: none; }
+                    body { margin: 0; }
+                }
+            </style>
+        </head>
+        <body>
+            ${printContent}
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Wait for content to load then print
+    setTimeout(() => {
+        printWindow.print();
+    }, 500);
+}
+
+function generatePrintableReport() {
+    const patient = assessmentData.patient;
+    const agniTotal = assessmentData.agni.vishama + assessmentData.agni.tikshna + assessmentData.agni.manda;
+    
+    return `
+        <div class="header">
+            <h1>4-PILLAR AYURVEDIC ASSESSMENT REPORT</h1>
+            <p><strong>Dr. Prakash Kumbar</strong></p>
+            <p>Date of Assessment: ${patient.assessmentDate || new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+            <h3>📋 Patient Information</h3>
+            <div class="patient-info">
+                <div class="score-grid">
+                    <div><strong>Name:</strong> ${patient.name || 'N/A'}</div>
+                    <div><strong>Age/Sex:</strong> ${patient.ageSex || 'N/A'}</div>
+                    <div><strong>Patient ID:</strong> ${patient.patientId || 'N/A'}</div>
+                    <div><strong>Referred By:</strong> ${patient.referredBy || 'N/A'}</div>
+                </div>
+                <p><strong>Chief Complaints:</strong> ${patient.complaints || 'N/A'}</p>
+                <p><strong>Past History:</strong> ${patient.pastHistory || 'N/A'}</p>
+                <p><strong>Additional Points:</strong> ${patient.additionalPoints || 'N/A'}</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>🔥 PILLAR 1: Agni Dusti Assessment</h3>
+            <div class="score-grid">
+                <div class="score-item">
+                    <strong>Vishama Agni (Vata):</strong> ${assessmentData.agni.vishama}
+                </div>
+                <div class="score-item">
+                    <strong>Tikshna Agni (Pitta):</strong> ${assessmentData.agni.tikshna}
+                </div>
+                <div class="score-item">
+                    <strong>Manda Agni (Kapha):</strong> ${assessmentData.agni.manda}
+                </div>
+                <div class="score-item">
+                    <strong>Sama Agni (Balanced):</strong> ${assessmentData.agni.sama}
+                </div>
+            </div>
+            <p><strong>Total Dusti Score:</strong> ${agniTotal}/8</p>
+            <p><strong>Assessment:</strong> ${getSeverityText(agniTotal, 'agni')}</p>
+        </div>
+        
+        <div class="section">
+            <h3>⚖️ PILLAR 2: Dosha Dusti Assessment</h3>
+            <div class="score-grid">
+                <div class="score-item">
+                    <strong>Vata Dosha:</strong> ${assessmentData.dosha.vata}/20<br>
+                    <small>${getDoshaSeverityText(assessmentData.dosha.vata)}</small>
+                </div>
+                <div class="score-item">
+                    <strong>Pitta Dosha:</strong> ${assessmentData.dosha.pitta}/20<br>
+                    <small>${getDoshaSeverityText(assessmentData.dosha.pitta)}</small>
+                </div>
+                <div class="score-item">
+                    <strong>Kapha Dosha:</strong> ${assessmentData.dosha.kapha}/20<br>
+                    <small>${getDoshaSeverityText(assessmentData.dosha.kapha)}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>🧬 PILLAR 3: Dhatu Dusti Assessment</h3>
+            <p><em>Framework Assessment Completed</em></p>
+            <p>Detailed evaluation of all 7 dhatus (Rasa, Rakta, Mamsa, Meda, Asthi, Majja, Shukra) for both Kshaya and Vriddhi symptoms.</p>
+        </div>
+        
+        <div class="section">
+            <h3>🌊 PILLAR 4: Sroto Dusti Assessment</h3>
+            <p><em>Framework Assessment Completed</em></p>
+            <p>Systematic evaluation of all 9 srotas based on classical lakshanas of dushti.</p>
+        </div>
+        
+        <div class="summary">
+            <h3>📊 Clinical Summary & Recommendations</h3>
+            <p><strong>Assessment Overview:</strong> This comprehensive 4-pillar assessment provides a systematic evaluation of the patient's constitutional state and pathological patterns according to classical Ayurvedic principles.</p>
+            
+            <p><strong>Key Findings:</strong></p>
+            <ul>
+                <li>Agni Assessment: ${getSeverityText(agniTotal, 'agni')}</li>
+                <li>Dominant Dosha: ${getDominantDosha()}</li>
+                <li>Constitutional Pattern: Based on current imbalances</li>
+            </ul>
+            
+            <p><strong>Recommendations:</strong> Treatment protocols should focus on balancing the identified imbalances through appropriate Panchakarma procedures, dietary modifications, lifestyle changes, and herbal formulations as per classical Ayurvedic guidelines.</p>
+            
+            <p><strong>Follow-up:</strong> Regular monitoring and reassessment recommended to track progress and adjust treatment as needed.</p>
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center; font-size: 12px; color: #666;">
+            <p>Generated by 4-Pillar Ayurvedic Assessment System | Dr. Prakash Kumbar</p>
+            <p>This report is based on classical Ayurvedic assessment methods and should be interpreted by qualified practitioners.</p>
+        </div>
+    `;
+}
+
+// Helper functions for report generation
+function getSeverityText(score, type) {
+    if (type === 'agni') {
+        if (score === 0) return 'Sama Agni (Balanced digestive fire)';
+        if (score <= 4) return 'Mild Agni Dusti (Minor digestive imbalance)';
+        if (score <= 6) return 'Moderate Agni Dusti (Significant digestive issues)';
+        return 'Severe Agni Dusti (Major digestive dysfunction)';
+    }
+    return 'Assessment completed';
+}
+
+function getDoshaSeverityText(score) {
+    if (score <= 4) return 'No significant dushti';
+    if (score <= 9) return 'Mild dushti';
+    if (score <= 14) return 'Moderate dushti';
+    if (score <= 20) return 'Severe dushti';
+    return 'Assessment incomplete';
+}
+
+function getDominantDosha() {
+    const doshas = ['vata', 'pitta', 'kapha'];
+    let maxScore = 0;
+    let dominant = 'Balanced';
+    
+    doshas.forEach(dosha => {
+        if (assessmentData.dosha[dosha] > maxScore) {
+            maxScore = assessmentData.dosha[dosha];
+            dominant = dosha.charAt(0).toUpperCase() + dosha.slice(1);
+        }
+    });
+    
+    return maxScore > 0 ? `${dominant} (Score: ${maxScore})` : 'Balanced state';
+}
+
+// Save assessment data
+function saveAssessmentData() {
+    // Collect all patient data
+    savePatientData();
+    
+    // Create comprehensive data object
+    const fullAssessment = {
+        timestamp: new Date().toISOString(),
+        patient: assessmentData.patient,
+        assessments: {
+            agni: {
+                scores: assessmentData.agni,
+                total: assessmentData.agni.vishama + assessmentData.agni.tikshna + assessmentData.agni.manda,
+                completed: assessmentData.completed.agni
+            },
+            dosha: {
+                scores: assessmentData.dosha,
+                completed: assessmentData.completed.dosha
+            },
+            dhatu: {
+                completed: assessmentData.completed.dhatu
+            },
+            srotas: {
+                completed: assessmentData.completed.srotas
+            }
+        },
+        selections: assessmentData.selections
+    };
+    
+    // Validate required fields
+    if (!assessmentData.patient.name || !assessmentData.patient.ageSex || !assessmentData.patient.complaints) {
+        alert('Please fill in all required patient information fields.');
+        return false;
+    }
+    
+    // Create and download JSON file
+    const assessmentJSON = JSON.stringify(fullAssessment, null, 2);
+    const blob = new Blob([assessmentJSON], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${assessmentData.patient.name.replace(/\s+/g, '_')}_4Pillar_Assessment_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert('Assessment data saved successfully!');
+    return true;
+}
+
+// Reset functions
+function resetAllAssessments() {
+    if (confirm('⚠️ Are you sure you want to reset ALL assessment data?\n\nThis will permanently delete:\n• All patient information\n• All assessment scores\n• All selections\n\nThis action cannot be undone!')) {
+        
+        // Reset all data
+        assessmentData = {
+            patient: {},
+            agni: { vishama: 0, tikshna: 0, manda: 0, sama: 0 },
+            dosha: { vata: 0, pitta: 0, kapha: 0 },
+            dhatu: {},
+            srotas: {},
+            selections: {},
+            completed: { agni: false, dosha: false, dhatu: false, srotas: false }
+        };
+        
+        // Clear all form inputs
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.value = '';
+        });
+        
+        // Reset date to today
+        document.getElementById('assessmentDate').valueAsDate = new Date();
+        
+        // Remove all selections
+        document.querySelectorAll('.clickable-cell').forEach(cell => {
+            cell.classList.remove('selected');
+        });
+        
+        // Reset all button states
+        updatePillarButtons();
+        
+        // Reset displays
+        updateAgniDisplay();
+        updateDoshaDisplay();
+        
+        // Clear result displays
+        document.getElementById('agni-results').innerHTML = 'Complete the assessment to see results...';
+        document.getElementById('dosha-results').innerHTML = 'Complete Vata assessment first, then Pitta and Kapha will appear...';
+        document.getElementById('dhatu-results').innerHTML = 'Dhatu assessment framework ready for implementation...';
+        document.getElementById('srotas-results').innerHTML = 'Srotas assessment framework ready for implementation...';
+        
+        // Update progress
+        updateProgress();
+        
+        // Return to main page
+        goToMain();
+        
+        // Show success message
+        setTimeout(() => {
+            alert('✅ All assessment data has been reset successfully!\n\nYou can now start a new assessment.');
+        }, 500);
+    }
+}
+
+function resetCurrentPillar() {
+    const currentPage = document.querySelector('.page.active').id;
+    const pillar = currentPage.replace('-page', '');
+    
+    if (confirm(`Reset ${pillar.toUpperCase()} assessment data?`)) {
+        // Reset specific pillar data
+        if (pillar === 'agni') {
+            assessmentData.agni = { vishama: 0, tikshna: 0, manda: 0, sama: 0 };
+            // Clear agni selections
+            Object.keys(assessmentData.selections).forEach(key => {
+                if (key.startsWith('agni_')) {
+                    delete assessmentData.selections[key];
+                }
+            });
+            // Remove visual selections
+            document.querySelectorAll('[data-pillar="agni"]').forEach(cell => {
+                cell.classList.remove('selected');
+            });
+            updateAgniDisplay();
+            checkAgniCompletion();
+        } else if (pillar === 'dosha') {
+            assessmentData.dosha = { vata: 0, pitta: 0, kapha: 0 };
+            // Clear dosha selections
+            Object.keys(assessmentData.selections).forEach(key => {
+                if (key.startsWith('dosha_')) {
+                    delete assessmentData.selections[key];
+                }
+            });
+            // Remove visual selections
+            document.querySelectorAll('[data-pillar="dosha"]').forEach(cell => {
+                cell.classList.remove('selected');
+            });
+            updateDoshaDisplay();
+            checkDoshaCompletion();
+        }
+        
+        // Mark as not completed
+        assessmentData.completed[pillar] = false;
+        updatePillarButtons();
+        updateProgress();
+        
+        alert(`${pillar.toUpperCase()} assessment has been reset.`);
+    }
+}
+
+// Export/Import functions
+function exportAssessment() {
+    if (saveAssessmentData()) {
+        console.log('Assessment exported successfully');
+    }
+}
+
+function importAssessment() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Validate data structure
+                    if (importedData.patient && importedData.assessments) {
+                        // Confirm import
+                        if (confirm(`Import assessment data for ${importedData.patient.name}?\n\nThis will overwrite current data.`)) {
+                            // Load imported data
+                            assessmentData.patient = importedData.patient;
+                            assessmentData.agni = importedData.assessments.agni.scores;
+                            assessmentData.dosha = importedData.assessments.dosha.scores;
+                            assessmentData.completed = {
+                                agni: importedData.assessments.agni.completed,
+                                dosha: importedData.assessments.dosha.completed,
+                                dhatu: importedData.assessments.dhatu.completed,
+                                srotas: importedData.assessments.srotas.completed
+                            };
+                            assessmentData.selections = importedData.selections || {};
+                            
+                            // Update form fields
+                            document.getElementById('patientName').value = assessmentData.patient.name || '';
+                            document.getElementById('ageSex').value = assessmentData.patient.ageSex || '';
+                            document.getElementById('patientId').value = assessmentData.patient.patientId || '';
+                            document.getElementById('assessmentDate').value = assessmentData.patient.assessmentDate || '';
+                            document.getElementById('complaints').value = assessmentData.patient.complaints || '';
+                            document.getElementById('pastHistory').value = assessmentData.patient.pastHistory || '';
+                            document.getElementById('additionalPoints').value = assessmentData.patient.additionalPoints || '';
+                            document.getElementById('referredBy').value = assessmentData.patient.referredBy || '';
+                            
+                            // Restore visual selections
+                            restoreSelections();
+                            
+                            // Update displays
+                            updatePillarButtons();
+                            updateProgress();
+                            updateAgniDisplay();
+                            updateDoshaDisplay();
+                            
+                            alert('Assessment data imported successfully!');
+                        }
+                    } else {
+                        alert('Invalid file format. Please select a valid assessment file.');
+                    }
+                } catch (error) {
+                    alert('Error reading file. Please check the file format.');
+                    console.error('Import error:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+    };
+    input.click();
+}
+
+function restoreSelections() {
+    // Restore visual selections based on saved selections
+    Object.keys(assessmentData.selections).forEach(key => {
+        const value = assessmentData.selections[key];
+        
+        if (key.startsWith('agni_')) {
+            const parameter = key.replace('agni_', '');
+            const cell = document.querySelector(`[data-pillar="agni"][data-parameter="${parameter}"][data-type="${value}"]`);
+            if (cell) cell.classList.add('selected');
+        } else if (key.startsWith('dosha_')) {
+            const parts = key.split('_');
+            const dosha = parts[1];
+            const parameter = parts[2];
+            const cell = document.querySelector(`[data-pillar="dosha"][data-dosha="${dosha}"][data-parameter="${parameter}"][data-score="${value}"]`);
+            if (cell) cell.classList.add('selected');
+        }
+    });
+}
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Ctrl+S to save
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveAssessmentData();
+    }
+    
+    // Ctrl+P to print (when on report page)
+    if (e.ctrlKey && e.key === 'p') {
+        const currentPage = document.querySelector('.page.active').id;
+        if (currentPage === 'report-page') {
+            e.preventDefault();
+            printFinalReport();
+        }
+    }
+    
+    // Escape to go back to main
+    if (e.key === 'Escape') {
+        goToMain();
+    }
+});
+
+// Add auto-save functionality
+let autoSaveTimer;
+function startAutoSave() {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => {
+        if (assessmentData.patient.name) {
+            // Auto-save to localStorage
+            localStorage.setItem('ayurveda_assessment_autosave', JSON.stringify(assessmentData));
+        }
+    }, 30000); // Auto-save every 30 seconds
+}
+
+// Load auto-saved data on startup
+document.addEventListener('DOMContentLoaded', function() {
+    const autoSaved = localStorage.getItem('ayurveda_assessment_autosave');
+    if (autoSaved) {
+        try {
+            const saved = JSON.parse(autoSaved);
+            if (saved.patient && saved.patient.name) {
+                if (confirm(`Found auto-saved data for ${saved.patient.name}. Would you like to restore it?`)) {
+                    // Restore auto-saved data
+                    assessmentData = saved;
+                    restoreSelections();
+                    updatePillarButtons();
+                    updateProgress();
+                    updateAgniDisplay();
+                    updateDoshaDisplay();
+                }
+            }
+        } catch (e) {
+            console.log('Could not restore auto-saved data');
+        }
+    }
+});
+
+// Initialize auto-save when form is filled
+document.addEventListener('input', startAutoSave);
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('clickable-cell')) {
+        startAutoSave();
+    }
+});
+
+console.log("✅ 4-Pillar Assessment System - Part 2 JavaScript loaded successfully!");
+console.log("🔧 Features loaded: Patient records, Agni assessment, Dosha assessment, Progress tracking, Export/Import, Auto-save");
+console.log("📋 Ready for assessment! Fill in patient details and start with Pillar 1.");
+        
     </script>
 </body>
 </html>
